@@ -7,6 +7,8 @@ public class Main {
 
     public static void main(String[] args) throws FileNotFoundException
     {
+        DataSet dataSet = new DataSet();
+        Incident incident = new Incident();
 
         Reading start = new Reading();
         File cleveland = new File("C:\\Users\\Admin\\IdeaProjects\\HeartDiseasePredictor\\src\\standard\\processed.cleveland.data");
@@ -18,5 +20,6 @@ public class Main {
         start.readFile(suisse);
         start.readFile(va);
 
+        start.samples.get(0).print();
     }
 }

@@ -52,10 +52,9 @@ public class Reading
         while (in.hasNextLine())
         {
             String tmp = in.nextLine();
-            System.out.print(tmp);
-            System.out.print("\n");
-            //line.add(in.nextLine());
-            //System.out.print(line.get(0));
+            //System.out.print(tmp);
+            //System.out.print("\n");
+
 
             String[] parts = tmp.split(",");
 
@@ -91,6 +90,4 @@ public class Reading
 
         counter++;
     }
-
-
 }

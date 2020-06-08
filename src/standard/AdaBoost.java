@@ -7,17 +7,15 @@ public class AdaBoost
     private ArrayList<DecisionStump> trainedStumps = new ArrayList<DecisionStump>();
     private ArrayList<DecisionStump> defaultStumps = new ArrayList<DecisionStump>();
 
-    DataSet dataSet = new DataSet();
-    Reading start = new Reading();
+    DataSet dataSet;
 
-
-
-
-    public AdaBoost()
+    public AdaBoost(DataSet dataSet)
     {
+        this.dataSet = dataSet;
+
         for( int i = 0; i < 13; i++)
         {
-            defaultStumps.add(new DecisionStump(i));
+            defaultStumps.add(new DecisionStump(i))
         }
     }
 
@@ -30,6 +28,11 @@ public class AdaBoost
 
         for( int i = 0; i < 13; i++)
         {
+            if(i == 1)
+                defaultStumps.get(i).setThreshold(0.5);
+            else
+                defaultStumps.get(i).calculateThreshold(incidents);
+
             quality = defaultStumps.get(i).stumpGiniImpurity(incidents);
 
             if (quality < lowest)
@@ -45,11 +48,22 @@ public class AdaBoost
 
     public void train()
     {
+        DecisionStump tmp;
+
         int i = 0;
-
-        while(i < 13)
+        while(i < 13) // dla płci threshold ustawić
         {
+            tmp = chooseBestStump(dataSet.incidents);
 
+            dataSet.setInitialWeights();
+
+            tmp.calculateAmountOfSay(dataSet.incidents);
+
+            tmp.updateIncidentWeights(dataSet.incidents);
+
+            dataSet.incidents = tmp.createNewIncidents(dataSet.incidents);
+
+            i++;
         }
     }
 

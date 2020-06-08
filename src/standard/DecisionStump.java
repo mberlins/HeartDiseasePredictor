@@ -3,6 +3,8 @@ package standard;
 import java.util.ArrayList;
 
 import java.lang.Math;
+import java.util.Random;
+
 import static java.lang.Math.pow;
 import static java.lang.Math.exp;
 
@@ -39,7 +41,8 @@ public class DecisionStump
 
         double value;
 
-        for (Incident incident : incidents) {
+        for (Incident incident : incidents)
+        {
             value = incident.getterSuperieur(attribute);
 
             if (value <= threshold && incident.getNum() > 0)
@@ -69,22 +72,22 @@ public class DecisionStump
         double lowestImpurity = 1;
         double tmp;
 
-        for (Incident incident : incidents) {
-
+        for (Incident incident : incidents)
+        {
             localThreshold = incident.getterSuperieur(attribute);
 
+            for (Incident incident2 : incidents)
+            {
+                value = incident2.getterSuperieur(attribute);
 
-            for (Incident incident2 : incidents) {
-            value = incident2.getterSuperieur(attribute);
-
-            if (value <= localThreshold && incident2.getNum() > 0)
-                lowerNodeIll++;
-            else if (value <= localThreshold && incident2.getNum() == 0)
-                lowerNodeHealthy++;
-            else if (value > localThreshold && incident2.getNum() > 0)
-                greaterNodeIll++;
-            else if (value > localThreshold && incident2.getNum() == 0)
-                greaterNodeHealthy++;
+                if (value <= localThreshold && incident2.getNum() > 0)
+                    lowerNodeIll++;
+                else if (value <= localThreshold && incident2.getNum() == 0)
+                    lowerNodeHealthy++;
+                else if (value > localThreshold && incident2.getNum() > 0)
+                    greaterNodeIll++;
+                else if (value > localThreshold && incident2.getNum() == 0)
+                    greaterNodeHealthy++;
             }
 
             tmp = giniImpurity(lowerNodeIll, lowerNodeHealthy, greaterNodeIll, greaterNodeHealthy);
@@ -104,7 +107,8 @@ public class DecisionStump
     {
         double totalError;
 
-        if(greaterNodeHealthy + lowerNodeIll > greaterNodeIll + lowerNodeHealthy) {
+        if(greaterNodeHealthy + lowerNodeIll > greaterNodeIll + lowerNodeHealthy)
+        {
             correctlyClassified = greaterNodeHealthy + lowerNodeIll;
             wronglyClassified = greaterNodeIll + lowerNodeHealthy;
             greaterIll = false;
@@ -119,10 +123,9 @@ public class DecisionStump
         totalError = wronglyClassified * incidents.get(0).getWeight(); // obojętnie jaki rekord, wszystkie na tym etapie będą miały takie same wagi, nowa tablica, rozkład prawdop
 
         if(totalError != 0)
-        amountOfSay = 0.5 * Math.log((1 - totalError) / totalError);
+            amountOfSay = 0.5 * Math.log((1 - totalError) / totalError);
         else
-        amountOfSay = 10; // jakoś dużo, przymyśleć jeszcze
-
+            amountOfSay = 10; // jakoś dużo, przymyśleć jeszcze
 
     }
 
@@ -135,10 +138,10 @@ public class DecisionStump
         double value;
         double normalization = 0.0;
 
-
-        if(greaterIll) {
-
-            for (Incident incident : incidents) {
+        if(greaterIll)
+        {
+            for (Incident incident : incidents)
+            {
                 value = incident.getterSuperieur(attribute);
 
                 if (value <= threshold && incident.getNum() > 0) // nietrafiona probka
@@ -151,8 +154,10 @@ public class DecisionStump
                     incident.setWeight(incident.getWeight() * exp(amountOfSay));
             }
         }
-        else {
-            for (Incident incident : incidents) {
+        else
+        {
+            for (Incident incident : incidents)
+            {
                 value = incident.getterSuperieur(attribute);
 
                 if (value <= threshold && incident.getNum() > 0) // trafiona probka
@@ -167,23 +172,52 @@ public class DecisionStump
         }
 
         // Normalizacja wag:
-        for (Incident incident : incidents) {
+        for (Incident incident : incidents)
+        {
             normalization = normalization + incident.getWeight();
         }
 
 
-        for (Incident incident : incidents) {
+        for (Incident incident : incidents)
+        {
             incident.setWeight(incident.getWeight() / normalization);
         }
         //System.out.print(normalization);
 
     }
 
+    /**
+     * tworzy nową tablicę dla nastepnego słabego klasyfikatora
+     */
+    public ArrayList<Incident> createNewIncidents(ArrayList<Incident> incidents)
+    {
+        ArrayList<Incident> newIncidents = new ArrayList<Incident>();
+        double weight = 0;
 
+        for (Incident incident : incidents)
+        {
+            weight = weight + incident.getWeight();
+            incident.setWeight(weight);
+        }
 
+        Random random = new Random();
+        double randomValue;
 
+        for (Incident incident : incidents)
+        {
+            randomValue = random.nextDouble();
+            for (Incident incident2 : incidents)
+            {
+                if(randomValue < incident2.getWeight())
+                {
+                    newIncidents.add(incident2);
+                    break;
+                }
+            }
+        }
 
-
+        return newIncidents;
+    }
 
     public void setThreshold(double threshold)
     {

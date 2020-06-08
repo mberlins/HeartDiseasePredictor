@@ -1,5 +1,7 @@
 package standard;
 
+import javafx.scene.transform.MatrixType;
+
 import java.util.ArrayList;
 
 import java.lang.Math;
@@ -10,11 +12,19 @@ import static java.lang.Math.exp;
 
 public class DecisionStump
 {
+    private int attribute;
     private double threshold;
     private double amountOfSay;
     private int greaterNodeIll, greaterNodeHealthy, lowerNodeIll, lowerNodeHealthy;
     private int correctlyClassified, wronglyClassified;
     private boolean greaterIll;
+    private boolean ifUsed = false;
+
+
+    DecisionStump(int attribute)
+    {
+        this.attribute = attribute;
+    }
 
     /**
      * oblicza giniImpurity dla swojego słabego klasyfikatora
@@ -36,7 +46,7 @@ public class DecisionStump
     /**
      * zlicza trafione i nietrafione wyniki klasyfikacji
      */
-    public double stumpGiniImpurity(ArrayList<Incident> incidents, int attribute)
+    public double stumpGiniImpurity(ArrayList<Incident> incidents)
     {
 
         double value;
@@ -61,7 +71,7 @@ public class DecisionStump
     /**
      * oblicza swój najlepszy próg podziału
      */
-    public void calculateThreshold (ArrayList<Incident> incidents, int attribute)
+    public void calculateThreshold (ArrayList<Incident> incidents)
     {
         int lowerNodeIll = 0;
         int lowerNodeHealthy = 0;
@@ -133,7 +143,7 @@ public class DecisionStump
      * ustawia nowe wagi dla incidents, im wiekszy stump ma glos, tym slabiej będą liczyły się trafione przez niego probki,
      * ale o wiele mocniej beda liczyly sie nietrafione przez niego probki.
      */
-    public void updateIncidentWeights(ArrayList<Incident> incidents, int attribute) // cos za ladnie sie dodaja wszystkie wagi przed normalizacja
+    public void updateIncidentWeights(ArrayList<Incident> incidents) // cos za ladnie sie dodaja wszystkie wagi przed normalizacja
     {
         double value;
         double normalization = 0.0;
@@ -237,5 +247,23 @@ public class DecisionStump
     public void setAmountOfSay(double amountOfSay)
     {
         this.amountOfSay = amountOfSay;
+    }
+
+    public int getAttribute() {
+        return attribute;
+    }
+
+    public void setAttribute(int attribute) {
+        this.attribute = attribute;
+    }
+
+    public boolean isIfUsed()
+    {
+        return ifUsed;
+    }
+
+    public void setIfUsed(boolean ifUsed)
+    {
+        this.ifUsed = ifUsed;
     }
 }

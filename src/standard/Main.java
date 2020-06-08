@@ -3,6 +3,7 @@ package standard;
 import java.io.File;
 import java.io.FileNotFoundException;
 
+
 public class Main {
 
     public static void main(String[] args) throws FileNotFoundException
@@ -26,13 +27,20 @@ public class Main {
 
         DecisionStump a = new DecisionStump();
 
-        a.setThreshold(30);
-
-        a.tryIncidents(start.samples.get(0).incidents, 0);
-
+        start.samples.get(0).setInitialWeights();
 
         a.calculateThreshold(start.samples.get(0).incidents, 0);
-        System.out.print(a.getThreshold());
+
+        a.stumpGiniImpurity(start.samples.get(0).incidents, 0);
+
+        a.calculateAmountOfSay(start.samples.get(0).incidents);
+        //a.setAmountOfSay(0.01);
+
+        a.updateIncidentWeights(start.samples.get(0).incidents, 0);
+
+        //System.out.print(a.getAmountOfSay());
+
+        //System.out.print(a.stumpGiniImpurity(start.samples.get(0).incidents, 0));
 
 
         //System.out.print(a.giniImpurityStump(105, 39, 34, 125));

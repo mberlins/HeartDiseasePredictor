@@ -46,6 +46,7 @@ public class Incident
     private double ca;
     private double thal;
     private double num;                //predicted atribute
+    private double weight;
 
 
     public double getterSuperieur(int index)
@@ -241,6 +242,10 @@ public class Incident
     public double getNum() {
         return num;
     }
+
+    public double getWeight() { return weight; }
+
+    public void setWeight(double weight) { this.weight = weight; }
 
     public void setNum(double num) {
         this.num = num;

@@ -26,4 +26,14 @@ public class DataSet
 
         }
     }
+
+    public void setInitialWeights()
+    {
+        double weight = 1.0 / incidents.size();
+
+        for (int i=0; i < incidents.size(); i++)
+        {
+            incidents.get(i).setWeight(weight);
+        }
+    }
 }

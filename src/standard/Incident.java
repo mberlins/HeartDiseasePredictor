@@ -314,5 +314,27 @@ public class Incident
         System.out.print(" ");
         System.out.print(num);
         System.out.print(" ");
+        System.out.print(weight);
+        System.out.print(" ");
+    }
+
+    void copyAttributes(Incident incident)
+    {
+        this.age = incident.getAge();
+        this.sex = incident.getSex();
+        this.cp = incident.getCp();
+        this.trestbps = incident.getTrestbps();
+        this.chol = incident.getChol();
+        this.fbs = incident.getFbs();
+        this.restecg = incident.getRestecg();
+        this.thalach = incident.getThalach();
+        this.exang = incident.getExang();
+        this.oldpeak = incident.getOldpeak();
+        this.slope = incident.getSlope();
+        this.ca = incident.getCa();
+        this.thal = incident.getThal();
+        this.num = incident.getNum();
+        this.weight = incident.getWeight();
     }
 }
+

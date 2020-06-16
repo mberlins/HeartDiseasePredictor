@@ -2,6 +2,7 @@ package standard;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.util.Random;
 
 
 public class Main {
@@ -22,11 +23,16 @@ public class Main {
         start.readFile(suisse);
         start.readFile(va);*/
 
+
+
+
+        AdaBoost adaBoost = new AdaBoost(start.samples.get(0));
+
+        adaBoost.train();
+
         //start.samples.get(0).print();
 
-
-
-        DecisionStump a = new DecisionStump(0);
+        /*DecisionStump a = new DecisionStump(0);
 
         start.samples.get(0).setInitialWeights();
 
@@ -42,7 +48,7 @@ public class Main {
         System.out.print(a.getAmountOfSay());
 
         System.out.print(a.stumpGiniImpurity(start.samples.get(0).incidents));
-
+*/
 
         //System.out.print(a.stumpGiniImpurity(105, 39);
     }

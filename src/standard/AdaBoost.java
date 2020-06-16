@@ -1,11 +1,13 @@
 package standard;
 
+
 import java.util.ArrayList;
 
 public class AdaBoost
 {
     private ArrayList<DecisionStump> trainedStumps = new ArrayList<DecisionStump>();
     private ArrayList<DecisionStump> defaultStumps = new ArrayList<DecisionStump>();
+    private ArrayList<Incident> tmpp = new ArrayList<Incident>();
 
     DataSet dataSet;
 
@@ -15,7 +17,7 @@ public class AdaBoost
 
         for( int i = 0; i < 13; i++)
         {
-            defaultStumps.add(new DecisionStump(i))
+            defaultStumps.add(new DecisionStump(i));
         }
     }
 
@@ -33,15 +35,18 @@ public class AdaBoost
             else
                 defaultStumps.get(i).calculateThreshold(incidents);
 
-            quality = defaultStumps.get(i).stumpGiniImpurity(incidents);
 
-            if (quality < lowest)
+
+            quality = defaultStumps.get(i).stumpGiniImpurity(incidents);
+            //System.out.println(quality);
+            if (quality < lowest && !defaultStumps.get(i).isIfUsed())
             {
                 lowest = quality;
                 result = i;
             }
         }
 
+        //System.out.println(result);
         defaultStumps.get(result).setIfUsed(true);
         return defaultStumps.get(result);
     }
@@ -51,20 +56,57 @@ public class AdaBoost
         DecisionStump tmp;
 
         int i = 0;
-        while(i < 13) // dla płci threshold ustawić
+        while(i < 5) // dla płci threshold ustawić
         {
+
             tmp = chooseBestStump(dataSet.incidents);
+
+
+            //System.out.println(tmp.getThreshold());
 
             dataSet.setInitialWeights();
 
+
+
             tmp.calculateAmountOfSay(dataSet.incidents);
+
+            /*for (int j = 0; j < dataSet.incidents.size(); j++)
+            {
+
+                System.out.println(dataSet.incidents.get(j).getWeight());
+            }*/
+
+
 
             tmp.updateIncidentWeights(dataSet.incidents);
 
+            /*for (int j = 0; j < dataSet.incidents.size(); j++)
+            {
+
+                System.out.println(dataSet.incidents.get(j).getWeight());
+                i++;
+            }
+*/
+            /*if(i == 1)
+                break;*/
+
+
+
             dataSet.incidents = tmp.createNewIncidents(dataSet.incidents);
+
+
+
+
+            //dataSet.incidents = tmp;
+
+            //dataSet.setInitialWeights();
+
 
             i++;
         }
+
+        for(int k = 0; k < 13; k++)
+            System.out.println(defaultStumps.get(k).amountOfSay);
     }
 
 

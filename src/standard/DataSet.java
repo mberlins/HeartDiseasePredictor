@@ -33,7 +33,9 @@ public class DataSet
 
         for (int i=0; i < incidents.size(); i++)
         {
+            //System.out.println(incidents.get(i).getWeight());
             incidents.get(i).setWeight(weight);
+            //System.out.println(incidents.get(i).getWeight());
         }
     }
 }

@@ -14,7 +14,7 @@ public class DecisionStump
 {
     private int attribute;
     private double threshold;
-    private double amountOfSay;
+    public double amountOfSay;
     private int greaterNodeIll, greaterNodeHealthy, lowerNodeIll, lowerNodeHealthy;
     private int correctlyClassified, wronglyClassified;
     private boolean greaterIll;
@@ -48,7 +48,11 @@ public class DecisionStump
      */
     public double stumpGiniImpurity(ArrayList<Incident> incidents)
     {
-
+        lowerNodeIll = 0;
+        lowerNodeHealthy = 0;
+        greaterNodeIll = 0;
+        greaterNodeHealthy = 0;
+        int i = 0;
         double value;
 
         for (Incident incident : incidents)
@@ -63,8 +67,17 @@ public class DecisionStump
                 greaterNodeIll++;
             else if (value > threshold && incident.getNum() == 0)
                 greaterNodeHealthy++;
+
+            i++;
         }
 
+
+        /*if(lowerNodeIll == 0 && greaterNodeIll == 0 && greaterNodeHealthy == 0)
+            System.out.println(i);*/
+        /*System.out.println(lowerNodeIll);
+        System.out.println(lowerNodeHealthy);
+        System.out.println(greaterNodeIll);
+        System.out.println(greaterNodeHealthy);*/
         return giniImpurity(lowerNodeIll, lowerNodeHealthy, greaterNodeIll, greaterNodeHealthy);
     }
 
@@ -108,6 +121,7 @@ public class DecisionStump
                 lowestImpurity = tmp;
             }
         }
+
     }
 
     /**
@@ -137,6 +151,8 @@ public class DecisionStump
         else
             amountOfSay = 10; // jakoś dużo, przymyśleć jeszcze
 
+        //System.out.println(wronglyClassified);
+
     }
 
     /**
@@ -147,21 +163,31 @@ public class DecisionStump
     {
         double value;
         double normalization = 0.0;
+        double tmp = 0.0;
+
+
+
 
         if(greaterIll)
         {
-            for (Incident incident : incidents)
-            {
+
+            for (Incident incident : incidents) {
                 value = incident.getterSuperieur(attribute);
 
-                if (value <= threshold && incident.getNum() > 0) // nietrafiona probka
+
+                if (value <= threshold && incident.getNum() > 0) { // nietrafiona probka
                     incident.setWeight(incident.getWeight() * exp(amountOfSay));
-                else if (value <= threshold && incident.getNum() == 0) // trafiona probka
+                }
+                else if (value <= threshold && incident.getNum() == 0) { // trafiona probka
                     incident.setWeight(incident.getWeight() * exp((-1) * amountOfSay));
-                else if (value > threshold && incident.getNum() > 0) // trafiona probka
+                }
+                else if (value > threshold && incident.getNum() > 0) { // trafiona probka
                     incident.setWeight(incident.getWeight() * exp((-1) * amountOfSay));
-                else if (value > threshold && incident.getNum() == 0) // nietrafiona probka
+                }
+                else if (value > threshold && incident.getNum() == 0) { // nietrafiona probka
                     incident.setWeight(incident.getWeight() * exp(amountOfSay));
+                }
+
             }
         }
         else
@@ -181,18 +207,25 @@ public class DecisionStump
             }
         }
 
+
+
+
         // Normalizacja wag:
         for (Incident incident : incidents)
         {
+            //System.out.println(incident.getWeight());
             normalization = normalization + incident.getWeight();
         }
+        //System.out.println(normalization);
 
 
+        double xd = 0;
         for (Incident incident : incidents)
         {
+            xd = xd + (incident.getWeight() / normalization);
             incident.setWeight(incident.getWeight() / normalization);
         }
-        //System.out.print(normalization);
+        //System.out.println(xd);
 
     }
 
@@ -204,6 +237,8 @@ public class DecisionStump
         ArrayList<Incident> newIncidents = new ArrayList<Incident>();
         double weight = 0;
 
+        //System.out.println(incidents.get(0).getWeight());
+
         for (Incident incident : incidents)
         {
             weight = weight + incident.getWeight();
@@ -213,18 +248,51 @@ public class DecisionStump
         Random random = new Random();
         double randomValue;
 
-        for (Incident incident : incidents)
+        //System.out.println(incidents.get(0).getWeight());
+        for (int i = 0; i < incidents.size(); i++)
         {
             randomValue = random.nextDouble();
-            for (Incident incident2 : incidents)
+            for (int j = 0; j < incidents.size(); j++)
             {
-                if(randomValue < incident2.getWeight())
+                if(randomValue < incidents.get(j).getWeight())
                 {
-                    newIncidents.add(incident2);
+                    Incident tmp = new Incident();
+                    tmp.copyAttributes(incidents.get(i));
+                    newIncidents.add(tmp);
                     break;
                 }
             }
         }
+
+
+
+        int i = 0;
+        /*for (Incident incident : newIncidents)
+        {
+
+            System.out.println("XDDDDDDDDDDD");
+            i++;
+        }*/
+
+       /* incidents.clear();
+
+        for (Incident incident : newIncidents)
+        {
+            incidents.add(incident);
+        }*/
+
+       /* double tmp = 1.0 / incidents.size();
+        System.out.println(tmp);
+
+        for (int i=0; i < incidents.size(); i++)
+        {
+            incidents.get(i).setWeight(tmp);
+        }
+
+        for (Incident incident : incidents) {
+            System.out.println(incident.getWeight());
+        }*/
+
 
         return newIncidents;
     }

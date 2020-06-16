@@ -46,7 +46,7 @@ public class AdaBoost
             }
         }
 
-        //System.out.println(result);
+        System.out.println(result);
         defaultStumps.get(result).setIfUsed(true);
         return defaultStumps.get(result);
     }
@@ -56,58 +56,51 @@ public class AdaBoost
         DecisionStump tmp;
 
         int i = 0;
-        while(i < 5) // dla płci threshold ustawić
+        while(i < 13) // dla płci threshold ustawić
         {
 
             tmp = chooseBestStump(dataSet.incidents);
 
-
-            //System.out.println(tmp.getThreshold());
-
             dataSet.setInitialWeights();
 
-
-
             tmp.calculateAmountOfSay(dataSet.incidents);
-
-            /*for (int j = 0; j < dataSet.incidents.size(); j++)
-            {
-
-                System.out.println(dataSet.incidents.get(j).getWeight());
-            }*/
-
 
 
             tmp.updateIncidentWeights(dataSet.incidents);
 
-            /*for (int j = 0; j < dataSet.incidents.size(); j++)
-            {
-
-                System.out.println(dataSet.incidents.get(j).getWeight());
-                i++;
-            }
-*/
-            /*if(i == 1)
-                break;*/
-
-
-
             dataSet.incidents = tmp.createNewIncidents(dataSet.incidents);
-
-
-
-
-            //dataSet.incidents = tmp;
-
-            //dataSet.setInitialWeights();
-
 
             i++;
         }
 
-        for(int k = 0; k < 13; k++)
-            System.out.println(defaultStumps.get(k).amountOfSay);
+        /*for(int k = 0; k < 13; k++)
+            System.out.println(defaultStumps.get(k).amountOfSay);*/
     }
+
+    public int classify(Incident incident)
+    {
+        double illAmountOfSay = 0.0;
+        double healthyAmountOfSay = 0.0;
+        int tmp;
+
+        for(int i = 0; i < 13; i++)
+        {
+            tmp = defaultStumps.get(i).classify(incident);
+            if(tmp == 1)
+                illAmountOfSay = illAmountOfSay + defaultStumps.get(i).getAmountOfSay();
+            if(tmp == 0)
+                healthyAmountOfSay = healthyAmountOfSay + defaultStumps.get(i).getAmountOfSay();
+        }
+
+        if(healthyAmountOfSay <= illAmountOfSay)
+            return 1;
+        else
+            return 0;
+    }
+
+
+
+
 
 
 

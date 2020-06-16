@@ -125,7 +125,7 @@ public class DecisionStump
     }
 
     /**
-     * zakładamy, że dobrze sklasyfikowanych próbek będzie zawsze więcej niż tych źle
+     * zakładamy, że dobrze sklasyfikowanych próbek będzie zawsze więcej niż tych źle JAKOŚ INACZEJ TO ZROBIĆ? JAK WERYFIKOWAĆ KTÓRE SĄ DOBRE, A KTÓRE ZŁE
      */
     public void calculateAmountOfSay(ArrayList<Incident> incidents)
     {
@@ -151,7 +151,7 @@ public class DecisionStump
         else
             amountOfSay = 10; // jakoś dużo, przymyśleć jeszcze
 
-        //System.out.println(wronglyClassified);
+
 
     }
 
@@ -213,10 +213,9 @@ public class DecisionStump
         // Normalizacja wag:
         for (Incident incident : incidents)
         {
-            //System.out.println(incident.getWeight());
             normalization = normalization + incident.getWeight();
         }
-        //System.out.println(normalization);
+
 
 
         double xd = 0;
@@ -225,7 +224,6 @@ public class DecisionStump
             xd = xd + (incident.getWeight() / normalization);
             incident.setWeight(incident.getWeight() / normalization);
         }
-        //System.out.println(xd);
 
     }
 
@@ -237,7 +235,6 @@ public class DecisionStump
         ArrayList<Incident> newIncidents = new ArrayList<Incident>();
         double weight = 0;
 
-        //System.out.println(incidents.get(0).getWeight());
 
         for (Incident incident : incidents)
         {
@@ -264,37 +261,28 @@ public class DecisionStump
             }
         }
 
-
-
-        int i = 0;
-        /*for (Incident incident : newIncidents)
-        {
-
-            System.out.println("XDDDDDDDDDDD");
-            i++;
-        }*/
-
-       /* incidents.clear();
-
-        for (Incident incident : newIncidents)
-        {
-            incidents.add(incident);
-        }*/
-
-       /* double tmp = 1.0 / incidents.size();
-        System.out.println(tmp);
-
-        for (int i=0; i < incidents.size(); i++)
-        {
-            incidents.get(i).setWeight(tmp);
-        }
-
-        for (Incident incident : incidents) {
-            System.out.println(incident.getWeight());
-        }*/
-
-
         return newIncidents;
+    }
+
+    /**
+     * 1 - zakwalifikowano jako chory, 0 - zakwalifikowano jako zdrowy
+     */
+    public int classify(Incident incident)
+    {
+        if(greaterIll)
+        {
+            if(incident.getterSuperieur(attribute) <= threshold)
+                return 0;
+            else
+                return 1;
+        }
+        else
+        {
+            if(incident.getterSuperieur(attribute) <= threshold)
+                return 1;
+            else
+                return 0;
+        }
     }
 
     public void setThreshold(double threshold)

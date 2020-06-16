@@ -7,19 +7,13 @@ import java.util.Scanner;
 
 public class Reading
 {
-    int counter;
+
     ArrayList<DataSet> samples;
     DataSet sample;
-    //ArrayList<String> line;
-    //double[] position;
+    ArrayList<Integer> counters;
 
-
-    public int getCounter() {
-        return counter;
-    }
-
-    public void setCounter(int counter) {
-        this.counter = counter;
+    public ArrayList<Integer> getCounters() {
+        return counters;
     }
 
     public ArrayList<DataSet> getSamples() {
@@ -32,36 +26,28 @@ public class Reading
 
     Reading()
     {
-        counter = 0;
         sample = new DataSet();
         samples = new ArrayList<DataSet>();
-        //line = new ArrayList<String>();
-        //position = new double[14];
+        counters = new ArrayList<Integer>();
     }
 
     void readFile(File file) throws FileNotFoundException
     {
-        System.out.print("Reading initialized\n\n");
 
+        System.out.print("Reading initialized\n\n");
+        int counter = 0;
+        DataSet temporary = new DataSet();
         double[] position;
         position = new double[14];
 
-        //File cleveland = new File("C:\\Users\\Admin\\IdeaProjects\\HeartDiseasePredictor\\src\\standard\\processed_cleveland.txt");
         Scanner in = new Scanner(file);
 
         while (in.hasNextLine())
         {
+            counter++;
             String tmp = in.nextLine();
-            //System.out.print(tmp);
-            //System.out.print("\n");
-
-
             String[] parts = tmp.split(",");
 
-        /*for (int i = 0; i < parts.length; i++)
-        {
-            System.out.println(parts[i]);
-        }*/
 
             for (int i = 0; i < parts.length; i++)
             {
@@ -76,18 +62,14 @@ public class Reading
                 position[i] = help;
             }
 
-        /*for (int i = 0; i < parts.length; i++)
-        {
-            System.out.println(position[i]);
-        }*/
 
             Incident incident = new Incident(position);
 
-            sample.addIncident(incident);
+            temporary.addIncident(incident);
 
         }
-        samples.add(sample);
+        samples.add(temporary);
 
-        counter++;
+        counters.add(counter);
     }
 }

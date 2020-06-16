@@ -15,12 +15,12 @@ public class Main {
 
 
         File cleveland = new File("processed.cleveland.data");
-        /*File magyarorszag = new File("processed.hungarian.data");
-        File suisse = new File("processed.switzerland.data");
+        File magyarorszag = new File("processed.hungarian.data");
+        /*File suisse = new File("processed.switzerland.data");
         File va = new File("processed.va.data");*/
         start.readFile(cleveland);
-        /*start.readFile(magyarorszag);
-        start.readFile(suisse);
+        start.readFile(magyarorszag);
+        /*start.readFile(suisse);
         start.readFile(va);*/
 
 
@@ -30,26 +30,16 @@ public class Main {
 
         adaBoost.train();
 
-        //start.samples.get(0).print();
-
-        /*DecisionStump a = new DecisionStump(0);
-
-        start.samples.get(0).setInitialWeights();
-
-        a.calculateThreshold(start.samples.get(0).incidents);
-
-        a.stumpGiniImpurity(start.samples.get(0).incidents);
-
-        a.calculateAmountOfSay(start.samples.get(0).incidents);
-        //a.setAmountOfSay(0.01);
-
-        a.updateIncidentWeights(start.samples.get(0).incidents);
-
-        System.out.print(a.getAmountOfSay());
-
-        System.out.print(a.stumpGiniImpurity(start.samples.get(0).incidents));
-*/
-
-        //System.out.print(a.stumpGiniImpurity(105, 39);
+        int tmp = 0;
+        int correct = 0;
+        for(int i = 0; i < start.getCounters().get(0); i++)
+        {
+            tmp = adaBoost.classify(start.samples.get(0).incidents.get(i));
+            if(start.samples.get(0).incidents.get(i).getNum() == 0 && tmp == 0)
+                correct++;
+            if(start.samples.get(0).incidents.get(i).getNum() > 0 && tmp == 1)
+                correct++;
+        }
+        System.out.println(correct);
     }
 }

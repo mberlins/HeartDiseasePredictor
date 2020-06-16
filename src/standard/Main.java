@@ -9,37 +9,29 @@ public class Main {
 
     public static void main(String[] args) throws FileNotFoundException
     {
-        DataSet dataSet = new DataSet();
-        Incident incident = new Incident();
+        long timeStart=System.currentTimeMillis();
+
         Reading start = new Reading();
 
 
         File cleveland = new File("processed.cleveland.data");
         File magyarorszag = new File("processed.hungarian.data");
-        /*File suisse = new File("processed.switzerland.data");
-        File va = new File("processed.va.data");*/
+        File suisse = new File("processed.switzerland.data");
+        File va = new File("processed.va.data");
+        File all = new File ("processed.all.data");
         start.readFile(cleveland);
         start.readFile(magyarorszag);
-        /*start.readFile(suisse);
-        start.readFile(va);*/
-
-
-
+        start.readFile(suisse);
+        start.readFile(va);
+        start.readFile(all);
 
         AdaBoost adaBoost = new AdaBoost(start.samples.get(0));
-
         adaBoost.train();
 
-        int tmp = 0;
-        int correct = 0;
-        for(int i = 0; i < start.getCounters().get(0); i++)
-        {
-            tmp = adaBoost.classify(start.samples.get(0).incidents.get(i));
-            if(start.samples.get(0).incidents.get(i).getNum() == 0 && tmp == 0)
-                correct++;
-            if(start.samples.get(0).incidents.get(i).getNum() > 0 && tmp == 1)
-                correct++;
-        }
-        System.out.println(correct);
+        Test test = new Test(start, adaBoost);
+        test.test();
+
+        long timeStop=System.currentTimeMillis();
+        System.out.println("Czas trenowania: "+ (timeStop - timeStart));
     }
 }

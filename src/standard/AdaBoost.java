@@ -1,6 +1,5 @@
 package standard;
 
-
 import java.util.ArrayList;
 
 public class AdaBoost
@@ -38,7 +37,7 @@ public class AdaBoost
 
 
             quality = defaultStumps.get(i).stumpGiniImpurity(incidents);
-            //System.out.println(quality);
+
             if (quality < lowest && !defaultStumps.get(i).isIfUsed())
             {
                 lowest = quality;
@@ -58,7 +57,6 @@ public class AdaBoost
         int i = 0;
         while(i < 13) // dla płci threshold ustawić
         {
-
             tmp = chooseBestStump(dataSet.incidents);
 
             dataSet.setInitialWeights();
@@ -72,9 +70,6 @@ public class AdaBoost
 
             i++;
         }
-
-        /*for(int k = 0; k < 13; k++)
-            System.out.println(defaultStumps.get(k).amountOfSay);*/
     }
 
     public int classify(Incident incident)
@@ -97,18 +92,6 @@ public class AdaBoost
         else
             return 0;
     }
-
-
-
-
-
-
-
-
-
-
-
-
 
     public ArrayList<DecisionStump> getTrainedStumps() {
         return trainedStumps;

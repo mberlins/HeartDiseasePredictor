@@ -17,6 +17,7 @@ public class Test
         {
             int tmp = 0;
             int correct = 0;
+
             for(int i = 0; i < start.getCounters().get(j); i++)
             {
                 tmp = adaBoost.classify(start.samples.get(j).incidents.get(i));
@@ -25,7 +26,8 @@ public class Test
                 if(start.samples.get(j).incidents.get(i).getNum() > 0 && tmp == 1)
                     correct++;
             }
-            System.out.println(correct);
+            double help = (double)correct/start.getCounters().get(j) * 100;
+            System.out.println("Skutecznosc przewidywania wynosi: " + help +"%");
         }
     }
 }

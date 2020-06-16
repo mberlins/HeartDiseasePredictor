@@ -337,4 +337,3 @@ public class Incident
         this.weight = incident.getWeight();
     }
 }
-

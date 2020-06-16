@@ -10,6 +10,9 @@ import java.util.Random;
 import static java.lang.Math.pow;
 import static java.lang.Math.exp;
 
+/**
+ * klasa odwzorowywująca słaby klasyfikator
+ */
 public class DecisionStump
 {
     private int attribute;
@@ -27,7 +30,7 @@ public class DecisionStump
     }
 
     /**
-     * oblicza giniImpurity dla swojego słabego klasyfikatora
+     * oblicza giniImpurity
      */
     public double giniImpurity(int yes1, int no1, int yes2, int no2)
     {
@@ -44,7 +47,7 @@ public class DecisionStump
 
 
     /**
-     * zlicza trafione i nietrafione wyniki klasyfikacji
+     * zlicza trafione i nietrafione wyniki klasyfikacji i oblicza gini impurity danego klasyfikatora
      */
     public double stumpGiniImpurity(ArrayList<Incident> incidents)
     {
@@ -72,12 +75,6 @@ public class DecisionStump
         }
 
 
-        /*if(lowerNodeIll == 0 && greaterNodeIll == 0 && greaterNodeHealthy == 0)
-            System.out.println(i);*/
-        /*System.out.println(lowerNodeIll);
-        System.out.println(lowerNodeHealthy);
-        System.out.println(greaterNodeIll);
-        System.out.println(greaterNodeHealthy);*/
         return giniImpurity(lowerNodeIll, lowerNodeHealthy, greaterNodeIll, greaterNodeHealthy);
     }
 
@@ -144,12 +141,12 @@ public class DecisionStump
             greaterIll = true;
         }
 
-        totalError = wronglyClassified * incidents.get(0).getWeight(); // obojętnie jaki rekord, wszystkie na tym etapie będą miały takie same wagi, nowa tablica, rozkład prawdop
+        totalError = wronglyClassified * incidents.get(0).getWeight(); // obojętnie jaki rekord, wszystkie na tym etapie będą miały takie same wagi
 
         if(totalError != 0)
             amountOfSay = 0.5 * Math.log((1 - totalError) / totalError);
         else
-            amountOfSay = 10; // jakoś dużo, przymyśleć jeszcze
+            amountOfSay = 1;
 
 
 
@@ -245,7 +242,6 @@ public class DecisionStump
         Random random = new Random();
         double randomValue;
 
-        //System.out.println(incidents.get(0).getWeight());
         for (int i = 0; i < incidents.size(); i++)
         {
             randomValue = random.nextDouble();
@@ -265,7 +261,7 @@ public class DecisionStump
     }
 
     /**
-     * 1 - zakwalifikowano jako chory, 0 - zakwalifikowano jako zdrowy
+     * klasyfikuje rekord na podstawie pojedynczego atrybutu
      */
     public int classify(Incident incident)
     {

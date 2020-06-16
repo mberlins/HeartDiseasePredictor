@@ -2,6 +2,9 @@ package standard;
 
 import java.util.ArrayList;
 
+/**
+ * klasa obsługująca algorytm adaptive boosting
+ */
 public class AdaBoost
 {
     private ArrayList<DecisionStump> trainedStumps = new ArrayList<DecisionStump>();
@@ -20,6 +23,9 @@ public class AdaBoost
         }
     }
 
+    /**
+     * wybiera klasyfikator z najniższym gini impurity, najlepiej dzielącego dane
+     */
     public DecisionStump chooseBestStump(ArrayList<Incident> incidents)
     {
         DecisionStump tmp;
@@ -50,6 +56,9 @@ public class AdaBoost
         return defaultStumps.get(result);
     }
 
+    /**
+     * metoda odpowiadająca za trenowanie klasyfikatorów
+     */
     public void train()
     {
         DecisionStump tmp;
@@ -72,6 +81,9 @@ public class AdaBoost
         }
     }
 
+    /**
+     * klasyfikuje rekordy
+     */
     public int classify(Incident incident)
     {
         double illAmountOfSay = 0.0;

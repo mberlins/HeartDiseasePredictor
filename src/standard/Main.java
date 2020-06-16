@@ -9,7 +9,7 @@ public class Main {
 
     public static void main(String[] args) throws FileNotFoundException
     {
-        long timeStart=System.currentTimeMillis();
+
 
         Reading start = new Reading();
 
@@ -25,13 +25,17 @@ public class Main {
         start.readFile(va);
         start.readFile(all);
 
-        AdaBoost adaBoost = new AdaBoost(start.samples.get(0));
+        long timeStart=System.currentTimeMillis();
+        AdaBoost adaBoost = new AdaBoost(start.samples.get(4));
         adaBoost.train();
+        long timeStop=System.currentTimeMillis();
+        System.out.println("Czas trenowania: "+ (timeStop - timeStart)+ "ms");
+
 
         Test test = new Test(start, adaBoost);
         test.test();
 
-        long timeStop=System.currentTimeMillis();
-        System.out.println("Czas trenowania: "+ (timeStop - timeStart));
+
+
     }
 }
